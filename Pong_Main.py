@@ -1,5 +1,6 @@
 import pygame as py
 import pandas as pd
+from Resolution_Help import *
 
 def start_pong():
     #Start pygame
@@ -8,12 +9,14 @@ def start_pong():
     #Variables
     white = (255, 255, 255)
     black =(0, 0, 0)
+    ratio = 1.2 # Higher ratio leads to smaller dimensions
+    x, y = pygameScreenSize(ratio)
 
     fps = 30
     paddle_color = white
 
     #Creates display and makes it fullscreen (you can change it to a different resolution if you want)
-    screen = py.display.set_mode((0, 0), py.FULLSCREEN)
+    screen = py.display.set_mode(size = (x, y))
 
     #Name of the tab
     py.display.set_caption('Pong')
@@ -48,12 +51,14 @@ def start_pong():
         #Fill the screen with a color
         screen.fill(black)
 
-        #Paddle proportions
-        rect_x, rect_y, rect_width, rect_height = 100, 100, 33, 125
+        # Functions to determine where in the window the pongs will be at and what size
+        rect1_x, rect1_y = determineInitialPosition(ratio, 1)
+        rect2_x, rect2_y = determineInitialPosition(ratio, 2)
+        rect_width, rect_height = determinePongSize(ratio)
 
         #create paddles
-        paddle_1 = py.draw.rect(screen, paddle_color, (rect_x, rect_y, rect_width, rect_height))
-        paddle_2 = py.draw.rect(screen, paddle_color, (rect_x + 1650, rect_y, rect_width, rect_height))
+        paddle_1 = py.draw.rect(screen, paddle_color, (rect1_x, rect1_y, rect_width, rect_height))
+        paddle_2 = py.draw.rect(screen, paddle_color, (rect2_x, rect2_y, rect_width, rect_height))
 
     #Function to make paddles move
     def paddle_moving(player_number):   
